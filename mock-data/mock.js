@@ -2,7 +2,7 @@ const todos = [
     {
         id: 1,
         todoName: "add transitions",
-        checked: false
+        checked: true
     },
     {
         id: 2,

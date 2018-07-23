@@ -1,6 +1,9 @@
 <template>
     <div class="todo-item">
-        <ui-checkbox v-model="completed" :class="done">{{todoName}}</ui-checkbox>
+        <ui-checkbox :value="todo.completed" :class="done" @change="checkTodo()">{{todo.title}}</ui-checkbox>
+        <div  @click="removeTodo">
+            <ui-icon icon="cancel" class="ui-icon"></ui-icon>
+        </div>
     </div>
 </template>
 
@@ -8,23 +11,20 @@
 export default {
   name: 'TodoItem',
   props: {
-    id: Number, 
-    todoName: String,
-    checked: Boolean
-  },
-  data () {
-    return {
-        completed: this.checked
-    }
+    todo: Object,
+    index: Number
   },
   computed: {
       done () {
-          return this.completed ? "done-item" : "todo-item"
+          return this.todo.completed ? "done-item" : "todo-item"
       }
   },
   methods: {
-      asdf: ()=>{
-          alert("cliecked")
+      removeTodo(){
+          this.$emit("removeTodo", this.index)
+      },
+      checkTodo(){
+          this.$emit("checkTodo", this.index)
       }
   }
 }
@@ -36,6 +36,19 @@ export default {
     }
     .todo-item {
         font-style: bold;
+        width: max-content;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+    .ui-icon {
+        margin-left: 7px !important;
+        margin-top: 0 !important;
+        font-size: 20px !important;
+        cursor: pointer !important;
+    }
+    .ui-icon:hover{
+        color: #7F0000;
     }
 </style>
 
