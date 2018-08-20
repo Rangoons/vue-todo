@@ -1,12 +1,20 @@
 <template>
   <div> 
     <AddTodo @addTodo="addTodo"/>
-    <TodoItem v-for="(todo, index) in todos" :key="todo.id" :index="index" :todo="todo" @removeTodo="removeTodo" @checkTodo="checkTodo"/>
+    <ApolloQuery
+        :query="require('../queries/TODOS.js').default"
+    >
+    <template slot-scope="{ result: {loading, error, data } }">
+        <span v-if="loading"> Loading... </span>
+        <div v-if="data && !loading">
+            <TodoItem v-for="(todo, index) in data.allTodos" :key="todo.id" :index="index" :todo="todo" @removeTodo="removeTodo" @checkTodo="checkTodo"/>
+        </div>
+    </template>
+    </ApolloQuery>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
 import TodoItem from './TodoItem.vue';
 import AddTodo from './AddTodo.vue';
 
@@ -14,37 +22,28 @@ export default {
     name: 'Dashboard',
     components: {
         TodoItem,
-        AddTodo
+        AddTodo,
     },
     data() {
         return {
-            todos: []
-        }
-    },
-    mounted() {
-        axios.get('https://jsonplaceholder.typicode.com/todos?userId=1')
-        .then(
-            (res)=>{
-                this.todos = res.data
-            }
-        )
-        .catch((err) => console.log(err))
+            todos: [],
+        };
     },
     methods: {
-        addTodo (payload) {
+        addTodo(payload) {
             this.todos.push({
                 id: this.todos.length + 1,
                 title: payload,
-                completed: false
-            })
+                completed: false,
+            });
         },
-        removeTodo (payload) {
-            this.todos.splice(payload, 1)
+        removeTodo(payload) {
+            this.todos.splice(payload, 1);
         },
-        checkTodo (payload) {
-            this.todos[payload].completed = !this.todos[payload].completed
-        }
-    }
+        checkTodo(payload) {
+            this.todos[payload].completed = !this.todos[payload].completed;
+        },
+    },
 };
 </script>
 

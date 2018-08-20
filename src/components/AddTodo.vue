@@ -1,28 +1,52 @@
 <template>
-    <ui-textbox ref="todoTextbox" v-model="todoName" @keydown-enter="addTodo" class="addTodo">
+    <ApolloMutation
+        :mutation="query"
+        :variables="{
+            title,
+            completed: false
+        }"
+        :update="update"
+        @done="onDone"
+    >
+    <template slot-scope="{ mutate, loading, error }">
+    <ui-textbox ref="todoTextbox" v-model="title" @keydown-enter="mutate" class="addTodo">
         Add a Todo
     </ui-textbox>
+    <span v-if="error">Error... Try again</span>
+    <span v-if="loading">Loading...</span>
+    </template>
+    </ApolloMutation>
 </template>
 
 <script>
+import ADD_TODO from '../queries/ADD_TODO';
+import TODOS from '../queries/TODOS';
 export default {
-  name: 'AddTodo',
-  data() {
-      return {
-          todoName: ''
-      }
-  },
-  methods: {
-      addTodo () {
-          this.$emit("addTodo", this.todoName)
-          this.$refs.todoTextbox.reset()
-      }
-  }
-}
+    name: 'AddTodo',
+    data() {
+        return {
+            query: ADD_TODO,
+            title: '',
+        };
+    },
+    methods: {
+        update(store, { data: { createTodo } }) {
+            // Read the data from our cache for this query.
+            const data = store.readQuery({ query: TODOS });
+            // Add our todo from the mutation to the end
+            data.allTodos.push(createTodo);
+            // Write our data back to the cache.
+            store.writeQuery({ query: TODOS, data });
+        },
+        onDone() {
+            this.$refs.todoTextbox.reset();
+        },
+    },
+};
 </script>
 
 <style>
-.addTodo{
+.addTodo {
     margin-bottom: 40px !important;
 }
 </style>
