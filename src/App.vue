@@ -5,24 +5,24 @@
 </template>
 
 <script>
-import Dashboard from './components/Dashboard.vue'
+import Dashboard from './components/Dashboard.vue';
 
 export default {
-  name: 'app',
-  components: {
-    Dashboard
-  },
-}
+    name: 'app',
+    components: {
+        Dashboard,
+    },
+};
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin: 60px auto;
-  width: 50%;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin: 60px auto;
+    width: 50%;
 }
 </style>
