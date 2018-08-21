@@ -7,8 +7,7 @@ import VueApollo from 'vue-apollo';
 
 const apolloProvider = new VueApollo({
     defaultClient: new ApolloClient({
-        uri: 'https://fakerql.com/graphql',
-        connectToDevTools: true,
+        uri: 'https://api-useast.graphcms.com/v1/cjl2ruqt101yy01bn88ns66yt/master',
     }),
 });
 

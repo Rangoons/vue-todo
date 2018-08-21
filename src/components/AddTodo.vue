@@ -34,7 +34,7 @@ export default {
             // Read the data from our cache for this query.
             const data = store.readQuery({ query: TODOS });
             // Add our todo from the mutation to the end
-            data.allTodos.push(createTodo);
+            data.todoes.push(createTodo);
             // Write our data back to the cache.
             store.writeQuery({ query: TODOS, data });
         },

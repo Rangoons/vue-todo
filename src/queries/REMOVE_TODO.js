@@ -1,8 +1,10 @@
 import { gql } from 'apollo-boost';
 
 export default gql`
-    mutation createTodo($title: String!) {
-        createTodo(title: $title) {
+    mutation deleteTodo($id: ID!) {
+        deleteTodo(where: {
+            id: $id
+        }) {
             id
             title
             completed

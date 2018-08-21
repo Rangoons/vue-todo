@@ -1,30 +1,39 @@
 <template>
-    <div class="todo-item">
-        <ui-checkbox :value="todo.completed" :class="done" @change="checkTodo()">{{todo.title}}</ui-checkbox>
-        <div  @click="removeTodo">
-            <ui-icon icon="cancel" class="ui-icon"></ui-icon>
+    <ApolloMutation
+        :mutation="query"
+        :variables="{
+            id: todo.id,
+            completed: !todo.completed
+        }"
+    >
+    <template slot-scope="{mutate, loading, error}">
+        <div class="todo-item">
+            <ui-checkbox :value="todo.completed" :class="done" @change="mutate">{{todo.title}}</ui-checkbox>
+            <RemoveTodo :id="todo.id"/>
         </div>
-    </div>
+    </template>
+    </ApolloMutation>
 </template>
 
 <script>
+import RemoveTodo from './RemoveTodo';
+import UPDATE_TODO from '../queries/UPDATE_TODO';
 export default {
   name: 'TodoItem',
+  components: {
+      RemoveTodo
+  },
   props: {
     todo: Object,
-    index: Number
+  },
+  data(){
+      return {
+          query: UPDATE_TODO
+      }
   },
   computed: {
       done () {
           return this.todo.completed ? "done-item" : "todo-item"
-      }
-  },
-  methods: {
-      removeTodo(){
-          this.$emit("removeTodo", this.index)
-      },
-      checkTodo(){
-          this.$emit("checkTodo", this.index)
       }
   }
 }
