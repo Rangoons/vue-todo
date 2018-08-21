@@ -22,32 +22,35 @@
 import ADD_TODO from '../queries/ADD_TODO';
 import TODOS from '../queries/TODOS';
 export default {
-    name: 'AddTodo',
-    data() {
-        return {
-            query: ADD_TODO,
-            title: '',
-        };
+  name: 'AddTodo',
+  data() {
+    return {
+      query: ADD_TODO,
+      title: '',
+    };
+  },
+  methods: {
+    immutablePush(arr, newEntry) {
+      return [...arr, newEntry];
     },
-    methods: {
-        update(store, { data: { createTodo } }) {
-            // Read the data from our cache for this query.
-            const data = store.readQuery({ query: TODOS });
-            // Add our todo from the mutation to the end
-            data.todoes.push(createTodo);
-            // Write our data back to the cache.
-            store.writeQuery({ query: TODOS, data });
-        },
-        onDone() {
-            this.$refs.todoTextbox.reset();
-        },
+    update(store, { data: { createTodo } }) {
+      // Read the data from our cache for this query.
+      const prev = store.readQuery({ query: TODOS });
+      // Add our todo from the mutation to the end
+      const data = immutablePush(prev.todoes, createTodo);
+      // Write our data back to the cache.
+      store.writeQuery({ query: TODOS, data });
     },
+    onDone() {
+      this.$refs.todoTextbox.reset();
+    },
+  },
 };
 </script>
 
 <style>
 .addTodo {
-    margin-bottom: 40px !important;
+  margin-bottom: 40px !important;
 }
 </style>
 
