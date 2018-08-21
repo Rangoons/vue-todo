@@ -30,11 +30,9 @@ export default {
     },
     methods: {
         update(store, { data: { deleteTodo } }) {
-            const data = store.readQuery({ query: TODOS });
-            const index = data.todoes.findIndex(o => o.id == deleteTodo.id);
-            if (index !== -1) {
-                data.todoes.splice(index, 1);
-            }
+            const prev = store.readQuery({ query: TODOS });
+            const data = {};
+            data.todoes = prev.todoes.filter(o => o.id !== deleteTodo.id);
             // Write our data back to the cache.
             store.writeQuery({ query: TODOS, data });
         },
